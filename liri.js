@@ -1,4 +1,5 @@
 require("dotenv").config();
+const fs = require("fs");
 const spotifyKey = require("keys.js");
 const Spotify = require("node-spotify-api");
 const spotify = new Spotify({
@@ -36,3 +37,19 @@ spotify.search({ type: "tupac", query: "california" }, (err, data) => {
 });
 search({ tupac, california });
 // search: function({ type: 'artist OR album OR track', query: 'My search query', limit: 20 }, callback);
+
+//This works. Hard code api key?
+const movieTitle = process.argv.slice(2).join("+");
+console.log(movieTitle);
+const request = require("request");
+request(
+  "http://www.omdbapi.com/?apikey=d876dbd6&t=" + movieTitle,
+  (error, response, body) => {
+    console.log("error:", error); // Print the error if one occurred
+    console.log("statusCode:", response && response.statusCode); // Print the response status code if a response was received
+    // responsebody.foreach(function(body) {
+    //   console.log(response.offers);
+    // });
+    console.log("body:", body); // Print the HTML for the Google homepage.
+  }
+);
