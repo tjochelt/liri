@@ -1,15 +1,14 @@
 require("dotenv").config();
 const fs = require("fs");
 const keys = require("./keys");
+const moment = require("moment");
+moment().format();
 const Spotify = require("node-spotify-api");
-let spotify = new Spotify(keys.spotify);
+const spotify = new Spotify(keys.spotify);
 const request = require("request");
 const command = process.argv[2];
 const liriRequest = process.argv.slice(3).join(" ");
-
 // const spotify = new Spotify(keys.spotify);
-// const concertThis = artist =>  - need to create a function for concert-this that runs when someone types in "conert-this" and passes in artist from command line
-//also need to format output
 console.log(command, liriRequest);
 if (command === "concert-this") {
   bandsInTown(liriRequest);
@@ -25,43 +24,50 @@ function bandsInTown(artist) {
     "https://rest.bandsintown.com/artists/" +
       artist +
       "/events?app_id=6d18437d8b763434dfe190acae6c9482&date=upcoming",
+    // bandsInTown.id +
+
     (error, response, body) => {
       console.log("error:", error);
       console.log("statusCode:", response && response.statusCode);
       let data = JSON.parse(body);
-      console.log("body:", body);
-      console.log(data[0].venue.name, data[0].venue.city, data[0].venue.region);
+      // console.log("body:", body);
+      const dateTime = data[0].datetime;
+      console.log(bandsInTown.id);
+      console.log(
+        artist,
+        ` \n Venue: ${data[0].venue.name} \n City: ${
+          data[0].venue.city
+        } \n State: ${data[0].venue.region} \n Date: ${moment(dateTime).format(
+          "MM/DD/YYYY"
+        )}`
+      );
     }
   );
 }
 
 function searchSpotify(song) {
-  console.log("what up");
+  console.log("spotify asked");
   spotify.search({ type: "track", query: song }, (err, data) => {
     if (err) {
       return console.log("Error occurred: " + err);
     }
 
     console.log(data);
+    console.log(`Artist: $`);
   });
 }
 
-// search: function({ type: 'artist OR album OR track', query: 'My search query', limit: 20 }, callback);
-
 //This works. Hard code api key?
 function movieThis(movie) {
-  // const movieTitle = process.argv.slice(2).join("+");
   console.log("dis dee movie:", movie);
-  // const request = require("request");
   request(
-    "http://www.omdbapi.com/?apikey=d876dbd6&t=" + movie,
+    `
+    http://www.omdbapi.com/?apikey=d876dbd6&t= ${movie}`,
+    // movies.id + "" + movie,
     (error, response, body) => {
       console.log("error:", error); // Print the error if one occurred
-      console.log("statusCode:", response && response.statusCode); // Print the response status code if a response was received
-      // responsebody.foreach(function(body) {
-      //   console.log(response.offers);
-      // });
-      console.log("body:", body); // Print the HTML for the Google homepage.
+      console.log("statusCode:", response && response.statusCode); // \
+      console.log("body:", body);
     }
   );
 }
