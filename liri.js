@@ -59,15 +59,24 @@ function searchSpotify(song) {
 
 //This works. Hard code api key?
 function movieThis(movie) {
-  console.log("dis dee movie:", movie);
   request(
     `
     http://www.omdbapi.com/?apikey=d876dbd6&t= ${movie}`,
     // movies.id + "" + movie,
     (error, response, body) => {
+      // console.log(body);
       console.log("error:", error); // Print the error if one occurred
       console.log("statusCode:", response && response.statusCode); // \
-      console.log("body:", body);
+      let data = JSON.parse(body);
+      console.log("here's the data:", data);
+      console.log(`
+      Title: ${body.title} \n
+      Year: ${data.year} \n
+      Country of production: ${data.country} \n
+      Language: ${data.language} \n
+      Plot: ${data.plot} \n
+      Actors: ${data.actors} \n
+      `);
     }
   );
 }
