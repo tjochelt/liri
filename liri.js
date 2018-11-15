@@ -10,15 +10,15 @@ const command = process.argv[2];
 const liriRequest = process.argv.slice(3).join(" ");
 // const spotify = new Spotify(keys.spotify);
 console.log(command, liriRequest);
-if (command === "concert-this") {
-  bandsInTown(liriRequest);
-}
-if (command === "spotify-this-song") {
-  searchSpotify(liriRequest);
-}
-if (command === "movie-this") {
-  movieThis(liriRequest);
-}
+// if (command === "concert-this") {
+//   bandsInTown(liriRequest);
+// }
+// if (command === "spotify-this-song") {
+//   searchSpotify(liriRequest);
+// }
+// if (command === "movie-this") {
+//   movieThis(liriRequest);
+// }
 // if (command === "do-this") {
 //   doThis();
 // }
@@ -87,11 +87,27 @@ function movieThis(movie) {
 
 fs.readFile("random.txt", "utf8", function(error, data) {
   // If the code experiences any errors it will log the error to the console.
+  const splitted = data.split(' "');
+  console.log("hi", splitted);
+  const newCommand = splitted[0];
+  const newSearch = splitted[1];
+  console.log(newCommand);
   if (error) {
     return console.log(error);
   } else {
-    console.log("doThisWorked", data);
+    if (newCommand === "concert-this") {
+      bandsInTown(newSearch);
+    }
+    if (newCommand === "spotify-this-song") {
+      searchSpotify(newSearch);
+    }
+    if (newCommand === "movie-this") {
+      movieThis(newSearch);
+    }
+    // console.log("doThisWorked", data);
+    // let obj = {};
   }
+  // console.log(obj);
 });
 
 //
